@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
-import { handleIntegrationMP } from './../MPIntegration';
 
 const PlanosScreen = ({ navigation }) => {
   const handlePress = async (plan) => {
@@ -13,11 +12,10 @@ const PlanosScreen = ({ navigation }) => {
     const selectedPlan = planoData[plan];
 
     if (selectedPlan) {
-      const url = await handleIntegrationMP(selectedPlan);
-      if (!url) {
-        return console.log("Ocorreu um erro ao integrar com o Mercado Pago");
-      }
-      navigation.navigate('Payment', { url, planName: selectedPlan.name });
+      console.log('Navigating to MethodPayment with:', selectedPlan);
+      navigation.navigate('MethodPayment', { plan: selectedPlan });
+    } else {
+      console.log('Plan not found:', plan);
     }
   };
 

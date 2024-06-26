@@ -6,13 +6,16 @@ import { useNavigation } from '@react-navigation/native';
 import { getDatabase, ref, update } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { initializeApp } from "firebase/app";
+import usePaymentStatus from '../hooks/usePaymentStatus'; // Importe corretamente o hook usePaymentStatus
 
 const PaymentScreen = ({ route }) => {
-  const { url, planName } = route.params;
+  const { url, planName, id } = route.params; // Não está utilizando id e type, mas se precisar, adicione-os aqui
   const [loading, setLoading] = useState(true);
+  const { paymentStatus } = usePaymentStatus(id, planName); // Obtenha a função startPolling do hook usePaymentStatus
   const navigation = useNavigation();
 
   useEffect(() => {
+    // Inicialize o Firebase aqui apenas uma vez
     const firebaseConfig = {
       apiKey: "AIzaSyC13O-bECEzG4-550uJXbzs2AM1SXna2I4",
       authDomain: "irizame-acfc9.firebaseapp.com",
@@ -27,7 +30,7 @@ const PaymentScreen = ({ route }) => {
 
   const handleWebViewMessage = async (event) => {
     const message = event.nativeEvent.data;
-    console.log(message)
+    console(`componente => ${message}`)
     if (message === 'payment_success') {
       Alert.alert('Pagamento', 'Pagamento realizado com sucesso!');
       try {
@@ -69,7 +72,9 @@ const PaymentScreen = ({ route }) => {
       <WebView
         source={{ uri: url }}
         onLoadStart={() => setLoading(true)}
-        onLoadEnd={() => setLoading(false)}
+        onLoadEnd={() => {
+          setLoading(false);
+        }}
         onMessage={handleWebViewMessage} // Captura mensagens da WebView
         injectedJavaScript={`
           // Exemplo de script que envia uma mensagem de sucesso para o aplicativo
@@ -95,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PaymentScreen;
+export default PaymentScreen

@@ -9,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
+import MethodPaymentScreen from './screens/MethodPayment';
 import TermsScreen from './screens/TermsScreen';
 import HomeScreen from './screens/HomeScreen';
 import Question1 from './screens/Questions/Question1';
@@ -47,6 +48,7 @@ export default function Main() {
                     <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} initialParams={{ component: "Home" }} />
                     <Stack.Screen name="Planos" component={PlanosScreen} options={{ headerShown: false }} initialParams={{ component: "Planos" }} />
+                    <Stack.Screen name="MethodPayment" component={MethodPaymentScreen} options={{ headerShown: false }} initialParams={{ component: "MethodPayment" }} />
                     <Stack.Screen name="Terms" component={TermsScreen} options={{ headerShown: false }}  initialParams={{ component: "Terms" }} />
                     <Stack.Screen name="Artigos" component={ArtigosScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Resultados" component={ResultadosScreen} options={{ headerShown: false }} />
