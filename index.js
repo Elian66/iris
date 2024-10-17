@@ -30,9 +30,13 @@ import RegisterScreen from './screens/RegisterScreen';
 import ArtigosScreen from './screens/ArtigosScreen';
 import ResultadosScreen from './screens/ResultadosScreen';
 import PdfScreen from './screens/PdfScreen';
+import StartStep from './screens/Questions/StartStep';
 import Finish from './screens/Questions/FinishStep';
 import PlanosScreen from './screens/PlanosScreen';
+import CardPayment from './screens/CardPaymentScreen';
 import Payment from './screens/PaymentScreen';
+import WebViewScreen from './screens/WebViewScreen';
+import RecoverScreen from './screens/RecoverScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,7 +48,9 @@ export default function Main() {
                 <Stack.Navigator>
                     <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }}  initialParams={{ component: "Welcome" }}/>
                     <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Recover" component={RecoverScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Payment" component={Payment} options={{ headerShown: false }} initialParams={{ component: "Payment" }}/>
+                    <Stack.Screen name="CardPayment" component={CardPayment} options={{ headerShown: false }} initialParams={{ component: "CardPayment" }}/>
                     <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} initialParams={{ component: "Home" }} />
                     <Stack.Screen name="Planos" component={PlanosScreen} options={{ headerShown: false }} initialParams={{ component: "Planos" }} />
@@ -53,6 +59,7 @@ export default function Main() {
                     <Stack.Screen name="Artigos" component={ArtigosScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Resultados" component={ResultadosScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Pdf" component={PdfScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="WebViewScreen" component={WebViewScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Question1" component={Question1} options={{ headerShown: false }} initialParams={{ component: "Question1" }}/>
                     <Stack.Screen name="Question2" component={Question2} options={{ headerShown: false }} initialParams={{ component: "Question2" }}/>
                     <Stack.Screen name="Question3" component={Question3} options={{ headerShown: false }} initialParams={{ component: "Question3" }}/>
@@ -68,6 +75,7 @@ export default function Main() {
                     <Stack.Screen name="Question13" component={Question13} options={{ headerShown: false }} initialParams={{ component: "Question13" }}/>
                     <Stack.Screen name="Question14" component={Question14} options={{ headerShown: false }} initialParams={{ component: "Question14" }}/>
                     <Stack.Screen name="Finish" component={Finish} options={{ headerShown: false }} initialParams={{ component: "Finish" }}/>
+                    <Stack.Screen name="Start" component={StartStep} options={{ headerShown: false }} initialParams={{ component: "Start" }}/>
 
                 </Stack.Navigator>
             </NavigationContainer>

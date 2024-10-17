@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import { Alert, TouchableOpacity, View } from 'react-native';
 import { Avatar, Button, Div, Text, Input } from 'react-native-magnus';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import conf from '../conf.json'
-import logo from '../assets/images/logo.jpg'
-import axios from 'axios';
-import useHttp from '../hooks/use-http';
+import logo from '../assets/images/logo.jpg';
 import { db, auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { serverTimestamp, getDatabase, ref, set, get } from "firebase/database"
+import { ref, get, serverTimestamp, set } from "firebase/database";
 
 export default function LoginScreen({ navigation }) {
-  const { post } = useHttp();
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,37 +22,40 @@ export default function LoginScreen({ navigation }) {
       await AsyncStorage.setItem('username', username);
 
       const userRef = ref(db, `users/${user.uid}`);
-      console.log(userRef)
+      console.log(userRef);
       get(userRef)
-      .then((snapshot) => {
+        .then((snapshot) => {
           if (snapshot.exists()) {
-              const userData = snapshot.val();
-              const userPlan = userData.plano; 
-              console.log('Plano do usuário login:', userPlan);
-              if (userPlan != null) {
-                navigation.navigate('Home');
-              } else {
-                navigation.navigate('Planos');
-              }
+            const userData = snapshot.val();
+            const userPlan = userData.plano;
+            console.log('Plano do usuário login:', userPlan);
+            if (userPlan != null) {
+              navigation.navigate('Home');
+            } else {
+              navigation.navigate('Planos');
+            }
           } else {
-              console.log('Documento do usuário não encontrado.');
+            console.log('Documento do usuário não encontrado.');
           }
-      })
-      .catch((error) => {
+        })
+        .catch((error) => {
           console.error('Erro ao buscar dados do usuário:', error);
-      });
-      //saveLoginData(user);
+        });
+
       setLoading(false);
     } catch (error) {
-      if(error.code === 'auth/invalid-credencial'){
+      if (error.code === 'auth/invalid-credentials') {
         Alert.alert('Erro de Login', 'Credenciais inválidas. Verifique seu e-mail e senha e tente novamente.');
-      }else{
+      } else {
         console.error('Error logging in:', error);
-        Alert.alert("Login Error", error.message);
+        Alert.alert('Login Error', error.message);
         setLoading(false);
       }
-      
     }
+  };
+
+  const redirectToRecover = () => {
+    navigation.navigate('Recover');
   };
 
   const redirectToRegister = () => {
@@ -69,7 +68,6 @@ export default function LoginScreen({ navigation }) {
       lastLogin: serverTimestamp()
     };
 
-    const db = getDatabase();
     try {
       await set(ref(db, 'users/' + user.uid), {
         email: user.email,
@@ -90,7 +88,7 @@ export default function LoginScreen({ navigation }) {
             size={200}
             source={logo}
           />
-          <Text fontSize={30} fontWeight="bold" color="#3C83B9" mt={10}>Irizame</Text> 
+          <Text fontSize={30} fontWeight="bold" color="#3C83B9" mt={10}>Irizame</Text>
         </Div>
         <Div flex={2} justifyContent='flex-start' alignItems='center' p={10}>
           <Input
@@ -120,7 +118,11 @@ export default function LoginScreen({ navigation }) {
           </Button>
 
           <TouchableOpacity onPress={redirectToRegister} style={{ marginTop: 10 }}>
-            <Text> Ainda não possui uma conta? Cadastre-se</Text>
+            <Text>Ainda não possui uma conta? Cadastre-se</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={redirectToRecover} style={{ marginTop: 10 }}>
+            <Text color="blue600">Esqueci minha senha</Text>
           </TouchableOpacity>
         </Div>
       </Div>

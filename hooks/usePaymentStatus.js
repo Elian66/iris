@@ -20,13 +20,14 @@ const usePaymentStatus = (paymentId, planName) => {
     let intervalId;
 
     const firebaseConfig = {
-      apiKey: "AIzaSyC13O-bECEzG4-550uJXbzs2AM1SXna2I4",
-      authDomain: "irizame-acfc9.firebaseapp.com",
-      databaseURL: "https://irizame-acfc9-default-rtdb.firebaseio.com",
-      projectId: "irizame-acfc9",
-      storageBucket: "irizame-acfc9.appspot.com",
-      messagingSenderId: "272959972303",
-      appId: "1:272959972303:web:94dd4278552ec1f3cea8ba"
+      apiKey: "AIzaSyDDZ_Cy_kh29l-2kPXQOd2z1VumQj5sKjw",
+      authDomain: "irizame-83890.firebaseapp.com",
+      databaseURL: "https://irizame-83890-default-rtdb.firebaseio.com",
+      projectId: "irizame-83890",
+      storageBucket: "irizame-83890.appspot.com",
+      messagingSenderId: "653377111210",
+      appId: "1:653377111210:web:35534c9fd2fc5104a93cd3",
+      measurementId: "G-1PJ7WMD7YC"
     };
     const app = initializeApp(firebaseConfig);
 
@@ -39,33 +40,50 @@ const usePaymentStatus = (paymentId, planName) => {
           }
         });
         const data = await response.json();
-        setPaymentStatus(data.status);
         console.log(data.status)
+        setPaymentStatus(data.status);
+
+        try {
+          const auth = getAuth(); // Obter a autenticação
+          const user = auth.currentUser; // Usuário atualmente autenticado
+          if (user) {
+            const db = getDatabase();
+            const userRef = ref(db, `users/${user.uid}`);
+            console.log(userRef)
+            await update(userRef, { plano: planName, planoUsado: true, lastPaymentId: paymentId, paymentPeding : true });
+            console.log('Plano cadastrado com sucesso!');
+          } else {
+            console.log('Usuário não autenticado.');
+          }
+        
+      } catch (error) {
+        console.error('Erro ao atualizar plano do usuário:', error);
+        // Implementar um feedback para o usuário sobre o erro
+      }
+
         if (data.status === 'approved') {
           setIsActive(false);
-          Alert.alert('Pagamento', 'Pagamento realizado com sucesso!');
           try {
-            const username = await AsyncStorage.getItem('username');
-            if (username) {
               const auth = getAuth(); // Obter a autenticação
               const user = auth.currentUser; // Usuário atualmente autenticado
               if (user) {
                 const db = getDatabase();
                 const userRef = ref(db, `users/${user.uid}`);
-                await update(userRef, { plano: planName });
+                console.log(userRef)
+                await update(userRef, { plano: planName, planoUsado: false, lastPaymentId: paymentId, paymentPeding : false });
                 console.log('Plano cadastrado com sucesso!');
               } else {
                 console.log('Usuário não autenticado.');
               }
-            } else {
-              console.log('Username não encontrado no AsyncStorage.');
-            }
+            
           } catch (error) {
             console.error('Erro ao atualizar plano do usuário:', error);
             // Implementar um feedback para o usuário sobre o erro
           }
 
+
           setTimeout(() => {
+            Alert.alert('Pagamento Realizado com sucesso')
             navigation.navigate('Home');
           }, 1000);
         }

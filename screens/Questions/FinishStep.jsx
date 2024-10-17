@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Div, Text, Skeleton } from 'react-native-magnus';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Pdf from 'react-native-pdf';
-import RNFetchBlob from 'rn-fetch-blob';
-import { Dimensions, Alert, Image } from 'react-native';
+import { Alert, Dimensions, Linking, Platform } from 'react-native';
 
-export default function Question10({ navigation }) {
+export default function Finish({ navigation }) {
     const [points, setPoints] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [pdfUri, setPdfUri] = useState(null);
 
-    const pdfUrls = {
-        1: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris1.pdf')).uri,
-        2: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris2.pdf')).uri,
-        3: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris3.pdf')).uri,
-        4: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris4.pdf')).uri,
-        5: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris5.pdf')).uri,
-        6: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris6.pdf')).uri,
-        7: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris7.pdf')).uri,
-        8: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris8.pdf')).uri,
-        9: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris9.pdf')).uri,
-        10: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris10.pdf')).uri,
-        11: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris11.pdf')).uri,
-        12: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris12.pdf')).uri,
-        13: Image.resolveAssetSource(require('../../assets/pdfs/relatorioDiagnosticoIris13.pdf')).uri,
+    const driveLinks = {
+        1: 'https://drive.google.com/file/d/1xxJoqk4kE4VEXJPcuoAvF_eWFSW4KW9f/view',
+        2: 'https://drive.google.com/file/d/1Cav-uNYXpG3ABacb9q_4O-85YGxuJbzi/view',
+        3: 'https://drive.google.com/file/d/1LeE3QRfdwL7-DX38j6Ii215Wvu_M-MUJ/view',
+        4: 'https://drive.google.com/file/d/1vSkDq0l75OdR3Admp_LTrhRDZVE4zfwH/view',
+        5: 'https://drive.google.com/file/d/1xXCfBGDRhGvyJ4-NfFufSbPQIi-RY4fG/view',
+        6: 'https://drive.google.com/file/d/1hseA1gT1KQLCA7Nz4uwOh86uzxv8eJ36/view',
+        7: 'https://drive.google.com/file/d/12kCJpZx4jCqpxHDJwnUlT_H5KNllinif/view',
+        8: 'https://drive.google.com/file/d/1YKweApmaH3oPizTTQexuFheDHjmbqNNC/view',
+        9: 'https://drive.google.com/file/d/18UU8-JCf74rwJOHm1DXzjAXnUtjIxUdB/view',
+        10:'https://drive.google.com/file/d/1ICNO2ELR8T2IlDAOtA7Q0G8gtIyoJLF6/view',
+        11:'https://drive.google.com/file/d/1CqN4hFkNJQczyxWSyWs3OEq78rHic6py/view',
+        12:'https://drive.google.com/file/d/1bwG2Lo8IKG1i0WSWb1-Jk_jhD-hSJKx9/view',
+        13:'https://drive.google.com/file/d/1L4yOZ69WJjruc0DUlPwN_lyuTxm175Gp/view',
     };
 
     const [dateTime, setDateTime] = useState({
@@ -39,14 +36,14 @@ export default function Question10({ navigation }) {
     };
 
     const nextStep = () => {
-        navigation.navigate('Home');
+        navigation.navigate('Home'); 
     };
 
     const sumPoints = async () => {
         let points = 0;
         for (let i = 1; i <= 9; i++) {
             const value = await AsyncStorage.getItem(`points_step_${i}`);
-            points += Number(value) || 0; // Garante que o valor é tratado como número
+            points += Number(value) || 0;
         }
         return points;
     };
@@ -57,65 +54,40 @@ export default function Question10({ navigation }) {
             const points = await sumPoints();
             setPoints(points);
             setLoading(false);
-
-            console.log('Points:', points);
-            console.log('PDF URLs:', pdfUrls);
-
-            // Determine the correct PDF URL based on points
-            let pdfSource = null;
-            if (points >= 1 && points <= 10) {
-                pdfSource = pdfUrls[1];
-            } else if (points >= 11 && points <= 20) {
-                pdfSource = pdfUrls[2];
-            } else if (points >= 21 && points <= 30) {
-                pdfSource = pdfUrls[3];
-            } else if (points >= 31 && points <= 40) {
-                pdfSource = pdfUrls[4];
-            } else if (points >= 41 && points <= 50) {
-                pdfSource = pdfUrls[5];
-            } else if (points >= 51 && points <= 60) {
-                pdfSource = pdfUrls[6];
-            } else if (points >= 61 && points <= 70) {
-                pdfSource = pdfUrls[7];
-            } else if (points >= 71 && points <= 80) {
-                pdfSource = pdfUrls[8];
-            } else if (points >= 81 && points <= 90) {
-                pdfSource = pdfUrls[9];
-            } else if (points >= 91 && points <= 100) {
-                pdfSource = pdfUrls[10];
-            } else if (points >= 101 && points <= 110) {
-                pdfSource = pdfUrls[11];
-            } else if (points >= 111 && points <= 120) {
-                pdfSource = pdfUrls[12];
-            } else {
-                pdfSource = pdfUrls[13];
-            }
-
-            console.log('PDF Source:', pdfSource);
-
-            if (pdfSource) {
-                RNFetchBlob.config({
-                    fileCache: true,
-                    appendExt: 'pdf'
-                })
-                .fetch('GET', pdfSource)
-                .then((res) => {
-                    setPdfUri(res.path());
-                    console.log('PDF URI after fetch:', res.path());
-                })
-                .catch((error) => {
-                    Alert.alert('Erro ao carregar o PDF', error.message);
-                    console.error(error);
-                });
-            }
         };
 
         fetchPoints();
     }, []);
 
-    useEffect(() => {
-        console.log('PDF URI:', pdfUri);
-    }, [pdfUri]);
+    const getDriveLink = (points) => {
+        if (points >= 1 && points <= 10) {
+            return driveLinks[1];
+        } else if (points >= 11 && points <= 20) {
+            return driveLinks[2];
+        } else if (points >= 21 && points <= 30) {
+            return driveLinks[3];
+        } else if (points >= 31 && points <= 40) {
+            return driveLinks[4];
+        } else if (points >= 41 && points <= 50) {
+            return driveLinks[5];
+        } else if (points >= 51 && points <= 60) {
+            return driveLinks[6];
+        } else if (points >= 61 && points <= 70) {
+            return driveLinks[7];
+        } else if (points >= 71 && points <= 80) {
+            return driveLinks[8];
+        } else if (points >= 81 && points <= 90) {
+            return driveLinks[9];
+        } else if (points >= 91 && points <= 100) {
+            return driveLinks[10];
+        } else if (points >= 101 && points <= 110) {
+            return driveLinks[11];
+        } else if (points >= 111 && points <= 120) {
+            return driveLinks[12];
+        } else {
+            return driveLinks[13];
+        }
+    };
 
     if (loading) {
         return (
@@ -139,33 +111,27 @@ export default function Question10({ navigation }) {
         );
     }
 
+    const driveLink = getDriveLink(points);
+
+    const handleOpenPDF = () => {
+        Linking.openURL(driveLink);
+    };
+
     return (
         <Div p={20} flex={1} justifyContent='center'>
             <Text fontSize={20} textAlign='center'>{points} pontos</Text>
-            {pdfUri ? (
-                <Pdf
-                    source={{ uri: pdfUri }}
-                    style={{ flex: 1, width: Dimensions.get('window').width }}
-                    onLoadComplete={(numberOfPages, filePath) => {
-                        console.log(`Number of pages: ${numberOfPages}`);
-                    }}
-                    onPageChanged={(page, numberOfPages) => {
-                        console.log(`Current page: ${page}`);
-                    }}
-                    onError={(error) => {
-                        Alert.alert('Erro ao carregar o PDF', error.message);
-                        console.log(error);
-                    }}
-                    onPressLink={(uri) => {
-                        console.log(`Link pressed: ${uri}`);
-                    }}
-                />
+            {driveLink ? (
+                <Div>
+                    <Text fontSize={15} textAlign='center'>Você finalizou com sucesso a sua avaliação de saúde, agora clique no botão abaixo para visualizar seu relatório.</Text>
+                    <Button onPress={handleOpenPDF} block mt={10}>
+                        Visualizar relatório
+                    </Button>
+                </Div>
             ) : (
-                <Text fontSize={15} textAlign='center'>Nenhum PDF disponível</Text>
+                <Text fontSize={15} textAlign='center'>Nenhum link disponível</Text>
             )}
-            <Text fontSize={15} textAlign='center'>Você finalizou com sucesso a sua avaliação de saúde, agora clique no menu na opção "Finalizar". </Text>
-            <Div >
-                <Button onPress={nextStep} block mt={10}>Finalizar</Button>
+            <Div>
+                <Button onPress={nextStep} block mt={10}>Voltar</Button>
             </Div>
         </Div>
     );

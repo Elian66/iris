@@ -33,9 +33,9 @@ const PlanosScreen = ({ navigation }) => {
             <View style={styles.textContent}>
               <Text style={styles.title}>Plano 1</Text>
               <Text style={styles.description}>Exame clínico da Íris</Text>
-              <Text style={styles.price}>R$ 29,90</Text>
+              <Text style={styles.price}>R$ 1,00</Text>
             </View>
-            <Image source={require('./../assets/images/plan1.jpg')} style={styles.image} />
+            <Image source={require('./../assets/images/plan1.png')} style={styles.image} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => handlePress('Plano 2')}>
@@ -45,7 +45,7 @@ const PlanosScreen = ({ navigation }) => {
               <Text style={styles.description}>Exame clínico da Íris + receita de fórmulas manipuladas para o tratamento</Text>
               <Text style={styles.price}>R$ 95,00</Text>
             </View>
-            <Image source={require('./../assets/images/plan1.jpg')} style={styles.image} />
+            <Image source={require('./../assets/images/plan2.png')} style={styles.image} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => handlePress('Plano 3')}>
@@ -55,7 +55,7 @@ const PlanosScreen = ({ navigation }) => {
               <Text style={styles.description}>Exame clínico da Íris + Exame da Íris comportamental + Tratamento completo com envio dos produtos</Text>
               <Text style={styles.price}>R$ 195,00</Text>
             </View>
-            <Image source={require('./../assets/images/plan3.jpg')} style={styles.image} />
+            <Image source={require('./../assets/images/plan3.png')} style={styles.image} />
           </View>
         </TouchableOpacity>
       </ScrollView>

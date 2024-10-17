@@ -5,13 +5,14 @@ import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC13O-bECEzG4-550uJXbzs2AM1SXna2I4",
-  authDomain: "irizame-acfc9.firebaseapp.com",
-  databaseURL: "https://irizame-acfc9-default-rtdb.firebaseio.com",
-  projectId: "irizame-acfc9",
-  storageBucket: "irizame-acfc9.appspot.com",
-  messagingSenderId: "272959972303",
-  appId: "1:272959972303:web:94dd4278552ec1f3cea8ba"
+  apiKey: "AIzaSyDDZ_Cy_kh29l-2kPXQOd2z1VumQj5sKjw",
+  authDomain: "irizame-83890.firebaseapp.com",
+  databaseURL: "https://irizame-83890-default-rtdb.firebaseio.com",
+  projectId: "irizame-83890",
+  storageBucket: "irizame-83890.appspot.com",
+  messagingSenderId: "653377111210",
+  appId: "1:653377111210:web:35534c9fd2fc5104a93cd3",
+  measurementId: "G-1PJ7WMD7YC"
 };
 
 let app;

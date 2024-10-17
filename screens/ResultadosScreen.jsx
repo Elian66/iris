@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
-import { Button, Div, Text, Icon, Drawer, Avatar } from 'react-native-magnus';
+import { View, FlatList, ActivityIndicator } from 'react-native';
+import { Button, Div, Text } from 'react-native-magnus';
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, query, orderByChild, equalTo, get } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import HeaderBack from './HeaderBack';
 
 const ResultadosScreen = ({ navigation }) => {
   const [results, setResults] = useState([]);
@@ -13,13 +13,14 @@ const ResultadosScreen = ({ navigation }) => {
 
   useEffect(() => {
     const firebaseConfig = {
-      apiKey: "AIzaSyC13O-bECEzG4-550uJXbzs2AM1SXna2I4",
-      authDomain: "irizame-acfc9.firebaseapp.com",
-      databaseURL: "https://irizame-acfc9-default-rtdb.firebaseio.com",
-      projectId: "irizame-acfc9",
-      storageBucket: "irizame-acfc9.appspot.com",
-      messagingSenderId: "272959972303",
-      appId: "1:272959972303:web:94dd4278552ec1f3cea8ba"
+      apiKey: "AIzaSyDDZ_Cy_kh29l-2kPXQOd2z1VumQj5sKjw",
+      authDomain: "irizame-83890.firebaseapp.com",
+      databaseURL: "https://irizame-83890-default-rtdb.firebaseio.com",
+      projectId: "irizame-83890",
+      storageBucket: "irizame-83890.appspot.com",
+      messagingSenderId: "653377111210",
+      appId: "1:653377111210:web:35534c9fd2fc5104a93cd3",
+      measurementId: "G-1PJ7WMD7YC"
     };
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
@@ -54,18 +55,55 @@ const ResultadosScreen = ({ navigation }) => {
     fetchResults();
   }, []);
 
-  // Função que simula a navegação
-  const navigateTo = (screen) => {
-    navigation.navigate(screen);
-  };
+  const renderResult = ({ item }) => {
+    const handleViewResult = () => {
+      const points = item.points;
+      let driveLink;
 
-  const renderResult = ({ item }) => (
-    <View style={{ padding: 8 }}>
-      <Text>{item.email}</Text>
-      <Text>Pontos: {item.points}</Text>
-      <Text>Feito em: {item.timestamp}</Text>
-    </View>
-  );
+      if (points >= 1 && points <= 10) {
+        driveLink = 'https://drive.google.com/file/d/1xxJoqk4kE4VEXJPcuoAvF_eWFSW4KW9f/view';
+      } else if (points >= 11 && points <= 20) {
+        driveLink = 'https://drive.google.com/file/d/1Cav-uNYXpG3ABacb9q_4O-85YGxuJbzi/view';
+      } else if (points >= 21 && points <= 30) {
+        driveLink = 'https://drive.google.com/file/d/1LeE3QRfdwL7-DX38j6Ii215Wvu_M-MUJ/view';
+      } else if (points >= 31 && points <= 40) {
+        driveLink = 'https://drive.google.com/file/d/1vSkDq0l75OdR3Admp_LTrhRDZVE4zfwH/view';
+      } else if (points >= 41 && points <= 50) {
+        driveLink = 'https://drive.google.com/file/d/1xXCfBGDRhGvyJ4-NfFufSbPQIi-RY4fG/view';
+      } else if (points >= 51 && points <= 60) {
+        driveLink = 'https://drive.google.com/file/d/1hseA1gT1KQLCA7Nz4uwOh86uzxv8eJ36/view';
+      } else if (points >= 61 && points <= 70) {
+        driveLink = 'https://drive.google.com/file/d/12kCJpZx4jCqpxHDJwnUlT_H5KNllinif/view';
+      } else if (points >= 71 && points <= 80) {
+        driveLink = 'https://drive.google.com/file/d/1YKweApmaH3oPizTTQexuFheDHjmbqNNC/view';
+      } else if (points >= 81 && points <= 90) {
+        driveLink = 'https://drive.google.com/file/d/18UU8-JCf74rwJOHm1DXzjAXnUtjIxUdB/view';
+      } else if (points >= 91 && points <= 100) {
+        driveLink = 'https://drive.google.com/file/d/1ICNO2ELR8T2IlDAOtA7Q0G8gtIyoJLF6/view';
+      } else if (points >= 101 && points <= 110) {
+        driveLink = 'https://drive.google.com/file/d/1CqN4hFkNJQczyxWSyWs3OEq78rHic6py/view';
+      } else if (points >= 111 && points <= 120) {
+        driveLink = 'https://drive.google.com/file/d/1bwG2Lo8IKG1i0WSWb1-Jk_jhD-hSJKx9/view';
+      } else {
+        driveLink = 'https://drive.google.com/file/d/1L4yOZ69WJjruc0DUlPwN_lyuTxm175Gp/view';
+      }
+
+      if (driveLink) {
+        navigation.navigate('WebViewScreen', { url: driveLink });
+      } else {
+        console.log('No valid link for points:', points);
+      }
+    };
+
+    return (
+      <View style={{ padding: 8 }}>
+        <Text>{item.email}</Text>
+        <Text>Pontos: {item.points}</Text>
+        <Text>Feito em: {item.timestamp}</Text>
+        <Button onPress={handleViewResult} mt={10}>Ver Resultado</Button>
+      </View>
+    );
+  };
 
   if (loading) {
     return (
@@ -76,8 +114,9 @@ const ResultadosScreen = ({ navigation }) => {
   }
 
   return (
-    <Div flex={1} p={10} style={{ backgroundColor: "white" }}>
-      <Div flex={1} justifyContent='center' alignItems='center'>
+    <Div flex={1} p={10} style={{ backgroundColor: "white", padding: 24 }}>
+      <Div flex={1} justifyContent='center' >
+        <HeaderBack navigation={navigation}>Meus Resultados</HeaderBack>
         <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', margin: 10 }}>
           {authenticatedEmail}
         </Text>
@@ -87,20 +126,6 @@ const ResultadosScreen = ({ navigation }) => {
           keyExtractor={item => item.email}
         />
       </Div>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 10, borderTopWidth: 1, borderTopColor: '#ccc' }}>
-        <TouchableOpacity onPress={() => navigateTo('Home')} style={{ alignItems: 'center' }}>
-          <Icon name='home' fontFamily="FontAwesome" fontSize='xl' color='gray800' />
-          <Text>Menu</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigateTo('Artigos')} style={{ alignItems: 'center' }}>
-          <Icon name='book' fontFamily="FontAwesome" fontSize='xl' color='gray800' />
-          <Text>Artigos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigateTo('Resultados')} style={{ alignItems: 'center' }}>
-          <Icon name='list' fontFamily="FontAwesome" fontSize='xl' color='gray800' />
-          <Text>Resultados</Text>
-        </TouchableOpacity>
-      </View>
     </Div>
   );
 };

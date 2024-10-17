@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.irisreactnative"
+    namespace "com.irizame"
     defaultConfig {
-        applicationId "com.irisreactnative"
+        applicationId "com.irizame"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -84,10 +84,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('release.keystore')
-            storePassword 'Iris@release'
-            keyAlias 'androidreleasekey'
-            keyPassword 'Iris@release'
+            storeFile file(MYAPP_UPLOAD_STORE_FILE)
+            storePassword MYAPP_UPLOAD_STORE_PASSWORD
+            keyAlias MYAPP_UPLOAD_KEY_ALIAS
+            keyPassword MYAPP_UPLOAD_KEY_PASSWORD
         }
         debug {
             storeFile file('debug.keystore')

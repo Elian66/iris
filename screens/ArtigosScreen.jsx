@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { FlatList, TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
 import { Div, Icon } from 'react-native-magnus';
+import HeaderBack from './HeaderBack';
 
 const articles = [
   {
@@ -42,33 +43,19 @@ export default function ArtigosScreen({ navigation }) {
 
   return (
     <Div flex={1} style={styles.container}>
-      <Text style={styles.header}>Artigos</Text>
+      <HeaderBack navigation={navigation}>Artigos</HeaderBack>
       <FlatList
         data={articles}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
-      <View style={styles.navigationBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.navigationItem}>
-          <Icon name='home' fontFamily="FontAwesome" fontSize='xl' color='gray800' />
-          <Text>Menu</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Artigos')} style={styles.navigationItem}>
-          <Icon name='book' fontFamily="FontAwesome" fontSize='xl' color='gray800' />
-          <Text>Artigos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Resultados')} style={styles.navigationItem}>
-          <Icon name='list' fontFamily="FontAwesome" fontSize='xl' color='gray800' />
-          <Text>Resultados</Text>
-        </TouchableOpacity>
-      </View>
     </Div>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    padding: 24,
   },
   header: {
     fontSize: 24,

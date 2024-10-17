@@ -42,46 +42,23 @@ export const handleIntegrationMP = async (planSelect) => {
     }
 };
 
-export const handleIntegrationMPPix = async (planSelect) => {
+export const handleIntegrationMPPix = async (planSelect, cpf) => {
     const { name, price } = planSelect;
     const newIdEmpotency = uuidv4();
-    console.log(newIdEmpotency)
 
     const preferencia = {
-            additional_info: {
-            items: [
-              {
-                "title": "Point Mini",
-                "description": "Point product for card payments via Bluetooth.",
-                "quantity": 1,
-                "unit_price": price
-              }
-            ],
-            payer: {
-              first_name: "Test",
-              last_name: "Test",
-              phone: {
-                area_code: 11,
-                number: "987654321"
-              },
-              address: {
-                street_number: null
-              }
+        transaction_amount: price,
+        description: `Pagamento Plano ${name}`,
+        payment_method_id: "pix",
+        payer: {
+            email: "email@email.com",
+            identification: {
+                type: "CPF",
+                number: cpf
             }
-           
-          },
-          "payer": {
-            entity_type: "individual",
-            type: "customer",
-            id: null,
-            email: "test_user_123@testuser.com"
-          },
-          payment_method_id: "pix",
-          transaction_amount: price
         }
+    }
     
-
-
     try {
         const response = await fetch('https://api.mercadopago.com/v1/payments', {
             method: "POST",

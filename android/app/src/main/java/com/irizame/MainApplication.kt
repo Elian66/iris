@@ -1,4 +1,4 @@
-package com.irisreactnative
+package com.irizame
 
 import android.app.Application
 import com.facebook.react.PackageList

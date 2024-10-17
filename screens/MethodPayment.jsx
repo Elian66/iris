@@ -1,22 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { handleIntegrationMPPix, handleIntegrationMP } from './../MPIntegration';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getDatabase, ref, get } from "firebase/database";
+import { auth } from '../firebase'; // Certifique-se de importar sua configuração do Firebase
 
 const MethodPayment = ({ route, navigation }) => {
+  const [ userCpf, setUserCpf ] = useState('95749019047')
+  const [ error, setError] = useState()
   const { plan } = route.params;
+
+  useEffect(() => {
+    const fetchUserCpf = async () => {
+      const db = getDatabase();
+      const user = auth.currentUser; // Obtém o usuário autenticado
+
+      if (user) {
+        const userRef = ref(db, `users/${user.uid}`); // Referência ao usuário específico
+
+        try {
+          const snapshot = await get(userRef); // Obtém os dados
+          if (snapshot.exists()) {
+            const userData = snapshot.val(); // Armazena os dados do usuário
+            setUserCpf(userData.cpf); // Define o CPF no estado
+          } else {
+            console.log("Nenhum dado encontrado para este usuário.");
+          }
+        } catch (err) {
+          console.error("Erro ao buscar dados do usuário:", err);
+          setError(err.message);
+        }
+      } else {
+        console.log("Usuário não autenticado.");
+        setLoading(false);
+      }
+    };
+
+    fetchUserCpf();
+  }, []);
+
+  
   const handlePress = async (method) => {
+  
     if (method == 'Pix') {
-      const response = await handleIntegrationMPPix(plan);
+      const response = await handleIntegrationMPPix(plan, userCpf);
       if (!response.url) {
         return console.log("Ocorreu um erro ao integrar com o Mercado Pago");
       }
+      try {
+        const paymentPlan = {id: response.id, status: 'pending'};
+
+        await AsyncStorage.setItem('paymentPlan', JSON.stringify(paymentPlan));
+        console.log('Paymente salvo com sucesso!');
+      } catch (error) {
+        console.error('Erro ao salvar dados:', error);
+      }
+
       navigation.navigate('Payment', { url: response.url , planName: plan, id: response.id, type: method });
     } else if (method == 'Cartão') {
-      const url = await handleIntegrationMP(plan);
-      if (!url) {
+      const data = await handleIntegrationMP(plan);
+      if (!data) {
         return console.log("Ocorreu um erro ao integrar com o Mercado Pago");
       }
-      navigation.navigate('Payment', { url: response.url, planName: plan, id: response.id, type: method });
+      navigation.navigate('CardPayment', { url: data, planName: plan.name });
     }
   };
 

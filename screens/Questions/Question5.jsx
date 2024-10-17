@@ -11,11 +11,15 @@ const options = [
     },
     {
         label: "Cerca de 2 copos",
-        points: 3,
+        points: 0,
     },
     {
-        label: "Mais de 60 minutos",
+        label: "De 2 a 6 Copos",
         points: 5,
+    },
+    {
+        label: "Muita. Provavelmente mais de 6 copos",
+        points: 10,
     }
 ];
 
